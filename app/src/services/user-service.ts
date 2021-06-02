@@ -1,5 +1,6 @@
 import UserRepository from "../repositories/user-repository";
 import { encode, TAlgorithm } from "jwt-simple";
+import EntryService from "./entry-service";
 
 const key = "b7TxMbAWrGskAEHkjTuFFhs7KCQB5XvXCVX58q6vN8HQBMDZEfTs6KXG8snRKfUdDsC3QMqmdevFqZQMpW6TyGxpwxh7NYKfnSfLvBL54ZTgsRpeTjT2Kx5JYB3KCRaT";
 
@@ -46,5 +47,29 @@ export default class UserService {
         delete user.password;
 
         return user;
+    }
+
+    public async adjustBalance(userId: string, newBalance: number) {
+        const userRepository = new UserRepository();
+        const user = await userRepository.getById(userId);
+        const currentBalance = user.balance;
+        const difference =  newBalance - currentBalance;
+
+        if(difference == 0) {
+            return;
+        }
+
+        const type = difference > 0 ? 'C' : 'D';
+
+        const entry: IInsertEntryPayload = {
+            description: "Ajuste de saldo",
+            dueDate: new Date(),
+            type: type,
+            value: Math.abs(difference),
+            showRecurrenceNumber: false
+        };
+
+        await new EntryService().add(entry, userId, true);
+        await userRepository.updateBalance(userId, newBalance);
     }
 }

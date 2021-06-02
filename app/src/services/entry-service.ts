@@ -5,7 +5,7 @@ import { addMonths, daysInMonth } from '../util/date-utils';
 
 export default class EntryService {
 
-    public async add(payload: IInsertEntryPayload, userId: string) {
+    public async add(payload: IInsertEntryPayload, userId: string, isPaid: boolean = false) {
         const entries: IEntry[] = [];
         const recurrenceNumber = payload.recurrenceNumber || 1;
         const recurrenceId = recurrenceNumber == 1 ? null : uuidv4();
@@ -19,7 +19,7 @@ export default class EntryService {
                 description: payload.description,
                 value: payload.value,
                 dueDate: dueDate,
-                isPaid: false,
+                isPaid: isPaid,
                 showRecurrenceNumber: payload.showRecurrenceNumber,
                 creditCardId: payload.creditCardId,
                 recurrenceId: recurrenceId,

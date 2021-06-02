@@ -60,6 +60,21 @@ Resources:
             Method: get
             RestApiId: !Ref CashflowApi
 
+  AdjustBalanceFunction:
+    Type: AWS::Serverless::Function 
+    Properties:
+      CodeUri: app/dist
+      Handler: ./functions/adjustBalanceFunction.lambdaHandler
+      Runtime: nodejs14.x
+      MemorySize: 256
+      Events:
+        ApiGatewayEvent:
+          Type: Api 
+          Properties:
+            Path: /me/balance-adjustment
+            Method: post
+            RestApiId: !Ref CashflowApi
+
   CreateCreditCardFunction:
     Type: AWS::Serverless::Function 
     Properties:
