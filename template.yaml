@@ -1,0 +1,153 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  Sample SAM Template for cashflow-api
+
+# More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
+Globals:
+  Function:
+    Timeout: 10
+
+Resources:
+  CashflowApi:
+      Type: AWS::Serverless::Api
+      Properties:
+        Name: Cashflow API
+        StageName: prod
+        Auth:
+          DefaultAuthorizer: MyLambdaTokenAuthorizer
+          Authorizers:
+            MyLambdaTokenAuthorizer:
+              FunctionArn: !GetAtt AuthHandlerFunction.Arn
+
+  AuthHandlerFunction:
+    Type: AWS::Serverless::Function 
+    Properties:
+      CodeUri: app
+      Handler: ./src/functions/authHandlerFunction.handler
+      Runtime: nodejs14.x
+      MemorySize: 256
+      
+  CreateTokenFunction:
+    Type: AWS::Serverless::Function 
+    Properties:
+      CodeUri: app/dist
+      Handler: ./functions/createTokenFunction.lambdaHandler
+      Runtime: nodejs14.x
+      MemorySize: 256
+      Events:
+        ApiGatewayEvent:
+          Type: Api 
+          Properties:
+            Path: /token
+            Method: post
+            Auth:
+              Authorizer: NONE
+            RestApiId: !Ref CashflowApi
+
+  GetMeFunction:
+    Type: AWS::Serverless::Function 
+    Properties:
+      CodeUri: app/dist
+      Handler: ./functions/getMeFunction.lambdaHandler
+      Runtime: nodejs14.x
+      MemorySize: 256
+      Events:
+        ApiGatewayEvent:
+          Type: Api 
+          Properties:
+            Path: /me
+            Method: get
+            RestApiId: !Ref CashflowApi
+
+  CreateCreditCardFunction:
+    Type: AWS::Serverless::Function 
+    Properties:
+      CodeUri: app/dist
+      Handler: ./functions/createCreditCardFunction.lambdaHandler
+      Runtime: nodejs14.x
+      MemorySize: 256
+      Events:
+        ApiGatewayEvent:
+          Type: Api 
+          Properties:
+            Path: /credit-cards
+            Method: post
+            RestApiId: !Ref CashflowApi
+
+  GetCreditCardsFunction:
+    Type: AWS::Serverless::Function 
+    Properties:
+      CodeUri: app/dist
+      Handler: ./functions/getCreditCardsFunction.lambdaHandler
+      Runtime: nodejs14.x
+      MemorySize: 256
+      Events:
+        ApiGatewayEvent:
+          Type: Api 
+          Properties:
+            Path: /credit-cards
+            Method: get
+            RestApiId: !Ref CashflowApi
+
+  CreateEntriesFunction:
+    Type: AWS::Serverless::Function 
+    Properties:
+      CodeUri: app/dist
+      Handler: ./functions/createEntriesFunction.lambdaHandler
+      Runtime: nodejs14.x
+      MemorySize: 256
+      Events:
+        ApiGatewayEvent:
+          Type: Api 
+          Properties:
+            Path: /entries
+            Method: post
+            RestApiId: !Ref CashflowApi
+
+  GetPendingEntriesFunction:
+    Type: AWS::Serverless::Function 
+    Properties:
+      CodeUri: app/dist
+      Handler: ./functions/getPendingEntriesFunction.lambdaHandler
+      Runtime: nodejs14.x
+      MemorySize: 256
+      Events:
+        ApiGatewayEvent:
+          Type: Api 
+          Properties:
+            Path: /entries/pending
+            Method: get
+            RestApiId: !Ref CashflowApi
+
+  CommitEntryFunction:
+    Type: AWS::Serverless::Function 
+    Properties:
+      CodeUri: app/dist
+      Handler: ./functions/commitEntryFunction.lambdaHandler
+      Runtime: nodejs14.x
+      MemorySize: 256
+      Events:
+        ApiGatewayEvent:
+          Type: Api 
+          Properties:
+            Path: /entries/{entryId}/commit
+            Method: post
+            RestApiId: !Ref CashflowApi
+      
+  TestFunction:
+    Type: AWS::Serverless::Function 
+    Properties:
+      CodeUri: app/dist
+      Handler: ./functions/testFunction.lambdaHandler
+      Runtime: nodejs14.x
+      MemorySize: 256
+      Events:
+        ApiGatewayEvent:
+          Type: Api 
+          Properties:
+            Path: /test
+            Method: get
+            RestApiId: !Ref CashflowApi
+
+  

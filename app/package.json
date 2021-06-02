@@ -1,0 +1,29 @@
+{
+  "name": "cashflow_api",
+  "version": "1.0.0",
+  "description": "CashFlow API",
+  "main": "app.js",
+  "repository": "https://github.com/awslabs/aws-sam-cli/tree/develop/samcli/local/init/templates/cookiecutter-aws-sam-hello-nodejs",
+  "author": "SAM CLI",
+  "license": "MIT",
+  "dependencies": {
+    "@types/mongodb": "^3.6.17",
+    "@types/uuid": "^8.3.0",
+    "axios": "^0.21.1",
+    "jwt-simple": "^0.5.6",
+    "mongodb": "^3.6.9",
+    "uuid": "^8.3.2"
+  },
+  "scripts": {
+    "compile": "tsc",
+    "build": "tsc",
+    "postbuild": "copy package.json dist\\package.json"
+  },
+  "devDependencies": {
+    "@types/aws-lambda": "^8.10.51",
+    "@types/jwt-simple": "^0.5.33",
+    "@types/node": "^13.13.5",
+    "chai": "^4.2.0",
+    "typescript": "^3.9.9"
+  }
+}

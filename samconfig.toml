@@ -1,0 +1,10 @@
+version = 0.1
+[default]
+[default.deploy]
+[default.deploy.parameters]
+stack_name = "CashFlowApi"
+s3_bucket = "aws-sam-cli-cashflow-api-us-east1"
+s3_prefix = "CashFlowApi"
+region = "us-east-1"
+confirm_changeset = false
+capabilities = "CAPABILITY_IAM"
