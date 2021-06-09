@@ -7,6 +7,7 @@ interface IEntry {
     dueDate: Date;
     isPaid: boolean;
     creditCardId?: string;
+    purchaseDate?: Date;
     recurrenceId?: string;
     recurrenceNumber?: number;
     recurrenceTotal?: number;

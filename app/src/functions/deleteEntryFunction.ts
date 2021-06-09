@@ -6,10 +6,12 @@ import EntryService from "../services/entry-service";
 import { defaultResult, getUserId } from "./index"
   
 export const lambdaHandler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
-    const ids = JSON.parse(event.body);
+
     const userId = getUserId(event);
+    const entryId = event.pathParameters.id;
+    const deleteAll = event.queryStringParameters?.deleteAll || 0;
     
-    const result = await new EntryService().commitMany(userId, ids);
-    
-    return defaultResult(200, result);
+    await new EntryService().delete(userId, entryId, Number(deleteAll));
+
+    return defaultResult(200);
 }

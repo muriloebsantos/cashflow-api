@@ -4,6 +4,8 @@ interface IInsertEntryPayload {
     value: number;
     dueDate: Date;
     creditCardId?: string;
+    purchaseDate?: Date;
+    recurrenceType?: string;
     recurrenceNumber?: number;
     showRecurrenceNumber: boolean;
 }

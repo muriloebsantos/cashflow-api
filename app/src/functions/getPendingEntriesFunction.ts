@@ -10,7 +10,8 @@ export const lambdaHandler = async (event: APIGatewayProxyEvent): Promise<APIGat
     const userId = getUserId(event);
     const initialMonth = event.queryStringParameters?.month || 0;
     const initialYear = event.queryStringParameters?.year || 0;
-    const result = await new EntryService().getPendingEntries(userId, Number(initialMonth), Number(initialYear));
+    const includeOverdue = event.queryStringParameters?.includeOverdue || 0;
+    const result = await new EntryService().getPendingEntries(userId, Number(initialMonth), Number(initialYear), Number(includeOverdue));
     
     return defaultResult(200, result);
 }

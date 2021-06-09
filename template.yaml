@@ -7,6 +7,11 @@ Description: >
 Globals:
   Function:
     Timeout: 10
+  Api:
+    Cors:
+      AllowMethods: "'GET,POST,PUT,DELETE,OPTIONS'"
+      AllowHeaders: "'Content-Type, Authorization'"
+      AllowOrigin: "'*'"
 
 Resources:
   CashflowApi:
@@ -15,6 +20,7 @@ Resources:
         Name: Cashflow API
         StageName: prod
         Auth:
+          AddDefaultAuthorizerToCorsPreflight: false
           DefaultAuthorizer: MyLambdaTokenAuthorizer
           Authorizers:
             MyLambdaTokenAuthorizer:
@@ -146,8 +152,38 @@ Resources:
         ApiGatewayEvent:
           Type: Api 
           Properties:
-            Path: /entries/{entryId}/commit
+            Path: /entries/commit
             Method: post
+            RestApiId: !Ref CashflowApi
+
+  DeleteEntryFunction:
+    Type: AWS::Serverless::Function 
+    Properties:
+      CodeUri: app/dist
+      Handler: ./functions/deleteEntryFunction.lambdaHandler
+      Runtime: nodejs14.x
+      MemorySize: 256
+      Events:
+        ApiGatewayEvent:
+          Type: Api 
+          Properties:
+            Path: /entries/{id}
+            Method: delete
+            RestApiId: !Ref CashflowApi
+
+  UpdateEntryFunction:
+    Type: AWS::Serverless::Function 
+    Properties:
+      CodeUri: app/dist
+      Handler: ./functions/updateEntryFunction.lambdaHandler
+      Runtime: nodejs14.x
+      MemorySize: 256
+      Events:
+        ApiGatewayEvent:
+          Type: Api 
+          Properties:
+            Path: /entries/{id}
+            Method: put
             RestApiId: !Ref CashflowApi
       
   TestFunction:

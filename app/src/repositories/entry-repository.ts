@@ -14,6 +14,18 @@ export default class EntryRepository {
         return db.collection('entries').findOne({ _id: id, userId: userId });
     }
 
+    public async deletePendingByRecurrenceId(userId: string, recurrenceId: string) {
+        const db = await connect();
+        
+        return db.collection('entries').deleteMany({ recurrenceId: recurrenceId, userId: userId });
+    }
+
+    public async delete(userId: string, id: string) {
+        const db = await connect();
+        
+        return db.collection('entries').deleteOne({ _id: id, userId: userId });
+    }
+
     public async setAsPaid(id: string) {
         const db = await connect();
         
@@ -28,8 +40,28 @@ export default class EntryRepository {
               isPaid: false,
               dueDate: {
                 $gte: initialDate,
-                $lt: endDate
+                $lte: endDate
             }
-        }).toArray();
+        }).sort({ dueDate: 1 }).toArray();
+    }
+
+    public async update(entry: IEntry) {
+        const db = await connect();
+        
+        return db.collection('entries').replaceOne({ _id: entry._id }, entry);
+    }
+
+    public async updateMany(userId: string, recurrenceId: string, type: string, description: string, value: number) {
+        const db = await connect();
+        
+        return db.collection('entries')
+                .updateMany({ recurrenceId: recurrenceId, userId: userId, isPaid: false }, 
+                            {
+                               $set: { 
+                                type: type,
+                                description: description,
+                                value: value
+                            } 
+                        });
     }
 }
