@@ -13,11 +13,16 @@ Globals:
       AllowHeaders: "'Content-Type, Authorization'"
       AllowOrigin: "'*'"
 
+Parameters:
+  ApiName:
+    Type: String
+
+
 Resources:
   CashflowApi:
       Type: AWS::Serverless::Api
       Properties:
-        Name: Cashflow API
+        Name: ${ApiName}
         StageName: prod
         Auth:
           AddDefaultAuthorizerToCorsPreflight: false

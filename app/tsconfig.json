@@ -2,10 +2,10 @@
     "compilerOptions": {
       "module": "CommonJS",
       "target": "ES2017",
-      "noImplicitAny": true,
+      "noImplicitAny": false,
       "preserveConstEnums": true,
       "outDir": "./dist",
-      "sourceMap": true
+      "sourceMap": false
     },
     "include": ["src/**/*"],
     "exclude": ["node_modules", "**/*.spec.ts"]
