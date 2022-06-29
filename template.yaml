@@ -7,6 +7,9 @@ Description: >
 Globals:
   Function:
     Timeout: 10
+    Environment:
+      Variables:
+        DB_CONNECTION: !Ref DbConnection
   Api:
     Cors:
       AllowMethods: "'GET,POST,PUT,DELETE,OPTIONS'"
@@ -16,7 +19,8 @@ Globals:
 Parameters:
   ApiName:
     Type: String
-
+  DbConnection:
+    Type: String
 
 Resources:
   CashflowApi:

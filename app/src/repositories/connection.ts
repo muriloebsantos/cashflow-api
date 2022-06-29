@@ -7,7 +7,7 @@ import { Db, MongoClient } from 'mongodb';
         return db;
     }
 
-    const uri = "mongodb+srv://cashflow:HKiNlTKTnDGISZbJ@cluster0.rhxpo.mongodb.net/cashflow?retryWrites=true&w=majority";
+    const uri = process.env.DB_CONNECTION;
     const client =  new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
     
     await client.connect();
