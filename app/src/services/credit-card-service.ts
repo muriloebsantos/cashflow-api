@@ -36,4 +36,25 @@ export default class CreditCardService {
     public async get(userId: string): Promise<ICreditCard[]> {
         return new CreditCardRepository().get(userId);
     }
+
+    public async delete(userId: string, creditCardId: string): Promise<IErrorOutput> {
+        const creditCardRepository = new CreditCardRepository()
+        try {
+            if(!await creditCardRepository.getById(creditCardId, userId)){
+                return {
+                    status: 404,
+                    error: 'Cartão não encontrado'
+                }
+            }
+
+           await creditCardRepository.delete(creditCardId, userId)
+        }
+        catch(e){
+            console.log(e)
+            return {
+                status: 500,
+                error: 'Erro ao Excluir Cartão'
+            }
+        }
+    }
 }
