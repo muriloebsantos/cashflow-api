@@ -64,7 +64,7 @@ export default class CreditCardService {
         }
     }
 
-    public async Update(userId:string, creditCard:ICreditCard):Promise<IErrorOutput>{
+    public async update(userId:string, creditCard:ICreditCard):Promise<IErrorOutput>{
         const creditCardRepository = new CreditCardRepository();
 
         try {
