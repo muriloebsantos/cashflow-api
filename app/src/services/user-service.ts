@@ -1,6 +1,7 @@
 import UserRepository from "../repositories/user-repository";
 import { encode, TAlgorithm } from "jwt-simple";
 import EntryService from "./entry-service";
+import { v4 as uuidv4 } from 'uuid'
 
 const key = "b7TxMbAWrGskAEHkjTuFFhs7KCQB5XvXCVX58q6vN8HQBMDZEfTs6KXG8snRKfUdDsC3QMqmdevFqZQMpW6TyGxpwxh7NYKfnSfLvBL54ZTgsRpeTjT2Kx5JYB3KCRaT";
 
@@ -71,5 +72,29 @@ export default class UserService {
 
         await new EntryService().add(entry, userId, true);
         await userRepository.updateBalance(userId, newBalance);
+    }
+
+    public async createUser(user: IUser){
+        const userRepository = new UserRepository()
+        const existingEmail = userRepository.getByEmail(user.email)
+
+        try {
+            if(existingEmail) {
+                return {
+                    status: 409,
+                    error: 'Email já cadastrado no sistema'
+                }                
+            }
+
+            const algorithm: TAlgorithm = "HS512";
+            const sha512Password = encode(user.password, key, algorithm)
+            user.password = sha512Password
+            user._id = uuidv4()
+            user.balance = 0
+            userRepository.insertUser(user)
+        }
+        catch(e) {
+            console.log(e)
+        }
     }
 }
