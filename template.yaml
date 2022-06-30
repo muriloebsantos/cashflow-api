@@ -120,6 +120,36 @@ Resources:
             Method: get
             RestApiId: !Ref CashflowApi
 
+  UpdateCreditCardFunction:
+      Type: AWS::Serverless::Function 
+      Properties:
+        CodeUri: app/dist
+        Handler: ./functions/updateCreditCardFunction.lambdaHandler
+        Runtime: nodejs14.x
+        MemorySize: 256
+        Events:
+          ApiGatewayEvent:
+            Type: Api 
+            Properties:
+              Path: /credit-cards/{id}
+              Method: put
+              RestApiId: !Ref CashflowApi
+
+  DeleteCreditCardFunction:
+      Type: AWS::Serverless::Function 
+      Properties:
+        CodeUri: app/dist
+        Handler: ./functions/deleteCreditCardFunction.lambdaHandler
+        Runtime: nodejs14.x
+        MemorySize: 256
+        Events:
+          ApiGatewayEvent:
+            Type: Api 
+            Properties:
+              Path: /credit-cards/{id}
+              Method: delete
+              RestApiId: !Ref CashflowApi
+              
   CreateEntriesFunction:
     Type: AWS::Serverless::Function 
     Properties:
@@ -210,4 +240,4 @@ Resources:
             Method: get
             RestApiId: !Ref CashflowApi
 
-  
+    

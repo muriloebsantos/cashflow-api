@@ -26,6 +26,12 @@ export default class EntryRepository {
         return db.collection('entries').deleteOne({ _id: id, userId: userId });
     }
 
+    public async deleteByCreditCard(cardId:string, userId:string) {
+        const db = await connect();
+
+        return db.collection('entries').deleteMany({creditCardId: cardId, userId: userId });
+    }
+
     public async setAsPaid(id: string) {
         const db = await connect();
         
