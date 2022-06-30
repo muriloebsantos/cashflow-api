@@ -24,9 +24,15 @@ export default class CreditCardRepository {
         });
     }
 
-    public async getById(creditCardID:string, userId:string) {
+    public async getById(creditCardID:string, userId:string):Promise<ICreditCard> {
         const db = await connect()
             
         return db.collection('credit_cards').findOne({ _id: creditCardID, userId: userId });
+    }
+
+    public async update(creditCard:ICreditCard) {
+        const db = await connect();    
+
+        return db.collection('credit_cards').replaceOne({ _id: creditCard._id}, creditCard)
     }
 }

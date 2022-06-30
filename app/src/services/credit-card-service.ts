@@ -57,4 +57,30 @@ export default class CreditCardService {
             }
         }
     }
+
+    public async Update(userId:string, creditCard:ICreditCard):Promise<IErrorOutput>{
+        const creditCardRepository = new CreditCardRepository()
+
+        try {
+            const existingCard = await creditCardRepository.getById(creditCard._id, userId)
+            if(!existingCard){
+                return {
+                    status: 404,
+                    error: 'Cartão não encontrado'
+                }
+            }
+            existingCard.name = creditCard.name
+            existingCard.dueDay = creditCard.dueDay
+            existingCard.closingDay = creditCard.closingDay
+
+           await creditCardRepository.update(existingCard)
+        }
+        catch(e){
+            console.log(e)
+            return {
+                status: 500,
+                error: 'Erro ao Atualizar Cartão'
+            }
+        }
+    }
 }
