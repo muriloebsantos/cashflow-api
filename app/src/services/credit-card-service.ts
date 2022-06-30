@@ -1,5 +1,6 @@
 import { v4 as uuidv4 } from 'uuid';
 import CreditCardRepository from '../repositories/credit-card-repository';
+import EntryRepository from '../repositories/entry-repository';
 
 export default class CreditCardService {
 
@@ -38,7 +39,9 @@ export default class CreditCardService {
     }
 
     public async delete(userId: string, creditCardId: string): Promise<IErrorOutput> {
-        const creditCardRepository = new CreditCardRepository()
+        const creditCardRepository = new CreditCardRepository();
+        const entryRepository = new EntryRepository();
+
         try {
             if(!await creditCardRepository.getById(creditCardId, userId)){
                 return {
@@ -47,10 +50,13 @@ export default class CreditCardService {
                 }
             }
 
-           await creditCardRepository.delete(creditCardId, userId)
+           await Promise.all([
+               creditCardRepository.delete(creditCardId, userId),
+               entryRepository.deleteByCreditCard(creditCardId, userId)
+            ])
         }
         catch(e){
-            console.log(e)
+            console.log(e);
             return {
                 status: 500,
                 error: 'Erro ao Excluir Cartão'
@@ -59,7 +65,7 @@ export default class CreditCardService {
     }
 
     public async Update(userId:string, creditCard:ICreditCard):Promise<IErrorOutput>{
-        const creditCardRepository = new CreditCardRepository()
+        const creditCardRepository = new CreditCardRepository();
 
         try {
             const existingCard = await creditCardRepository.getById(creditCard._id, userId)
@@ -69,11 +75,11 @@ export default class CreditCardService {
                     error: 'Cartão não encontrado'
                 }
             }
-            existingCard.name = creditCard.name
-            existingCard.dueDay = creditCard.dueDay
-            existingCard.closingDay = creditCard.closingDay
+            existingCard.name = creditCard.name;
+            existingCard.dueDay = creditCard.dueDay;
+            existingCard.closingDay = creditCard.closingDay;
 
-           await creditCardRepository.update(existingCard)
+           await creditCardRepository.update(existingCard);
         }
         catch(e){
             console.log(e)
