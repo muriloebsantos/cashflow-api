@@ -74,11 +74,27 @@ export default class UserService {
         await userRepository.updateBalance(userId, newBalance);
     }
 
-    public async createUser(user: IUser){
-        const userRepository = new UserRepository()
-        const existingEmail = userRepository.getByEmail(user.email)
+    private hash512Password (password:string) {
+        const crypto = require('crypto');
+        const hash512 = crypto.createHash('sha512');
+        const preHashPassword =  hash512.update(password, 'utf-8');
+        const hash512Password = preHashPassword.digest('hex');
+        return hash512Password
+    } 
 
+    private verifyPasswordStrength (password:string) {
+        if(password.length >= 6) {
+            return true;
+        } else {
+            return false;
+        }
+    } 
+    public async createUser(user: IUser){
+        
         try {
+            const userRepository = new UserRepository();
+            const existingEmail = await userRepository.getByEmail(user.email);
+            
             if(existingEmail) {
                 return {
                     status: 409,
@@ -86,15 +102,20 @@ export default class UserService {
                 }                
             }
 
-            const algorithm: TAlgorithm = "HS512";
-            const sha512Password = encode(user.password, key, algorithm)
-            user.password = sha512Password
-            user._id = uuidv4()
-            user.balance = 0
-            userRepository.insertUser(user)
+            if(!this.verifyPasswordStrength(user.password)) {
+               return {
+                status: 400,
+                error: 'A Senha recebida não atende aos padrões de seguranca minímos'
+               }
+            }
+
+            user._id = uuidv4();
+            user.password = this.hash512Password(user.password);
+            user.balance = 0;
+            await userRepository.insertUser(user);
         }
         catch(e) {
-            console.log(e)
+            console.log(e);
         }
     }
 }
