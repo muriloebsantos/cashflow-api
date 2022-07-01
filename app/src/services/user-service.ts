@@ -2,7 +2,7 @@ import UserRepository from "../repositories/user-repository";
 import { encode, TAlgorithm } from "jwt-simple";
 import EntryService from "./entry-service";
 
-const key = "b7TxMbAWrGskAEHkjTuFFhs7KCQB5XvXCVX58q6vN8HQBMDZEfTs6KXG8snRKfUdDsC3QMqmdevFqZQMpW6TyGxpwxh7NYKfnSfLvBL54ZTgsRpeTjT2Kx5JYB3KCRaT";
+const key = process.env.JWT_KEY;
 
 export default class UserService {
 
