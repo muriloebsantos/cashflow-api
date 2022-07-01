@@ -3,4 +3,4 @@ npm install
 npm run build
 cd ..
 sam build 
-sam deploy --stack-name CashFlowApi --parameter-overrides ApiName="Cashflow API" DbConnection="$CashflowDbProd"
+sam deploy --stack-name CashFlowApi --parameter-overrides ApiName="Cashflow API" DbConnection="$CashflowDbProd" JwtKey="$JwtKey"
