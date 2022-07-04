@@ -19,4 +19,10 @@ export default class UserRepository {
         
         return db.collection('users').updateOne({ _id: userId }, { $set: { balance: balance } });
     }
+
+    public async insertUser(user:IUser){
+        const db = await connect();
+
+        return db.collection('users').insert(user);
+    }
 }
