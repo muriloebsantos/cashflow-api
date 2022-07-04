@@ -17,7 +17,7 @@ export default class UserService {
 
         const user = await new UserRepository().getByEmail(authPayload.email);
 
-        if(!user || user.password != authPayload.password) {
+        if(!user || user.password != this.hash512Password(authPayload.password)) {
             return { 
                 status: 401,
                 error: 'E-mail ou senha inválido'
@@ -94,7 +94,7 @@ export default class UserService {
         try {
             const userRepository = new UserRepository();
             const existingEmail = await userRepository.getByEmail(user.email);
-            
+
             if(existingEmail) {
                 return {
                     status: 409,
@@ -110,9 +110,15 @@ export default class UserService {
             }
 
             user._id = uuidv4();
-            user.password = this.hash512Password(user.password);
+            const textPlainPassword = user.password
+            user.password = this.hash512Password(textPlainPassword);
             user.balance = 0;
             await userRepository.insertUser(user);
+
+            return await this.authenticate({
+                email: user.email,
+                password: textPlainPassword
+            })
         }
         catch(e) {
             console.log(e);
