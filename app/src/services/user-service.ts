@@ -79,7 +79,7 @@ export default class UserService {
         const hash512 = crypto.createHash('sha512');
         const preHashPassword =  hash512.update(password, 'utf-8');
         const hash512Password = preHashPassword.digest('hex');
-        return hash512Password
+        return hash512Password;
     } 
 
     private verifyPasswordStrength (password:string) {
