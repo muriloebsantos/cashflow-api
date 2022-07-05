@@ -38,6 +38,19 @@ export default class EntryRepository {
         return db.collection('entries').updateOne({ _id: id }, { $set: { isPaid: true }});
     }
 
+    public async getEntries(userId: string, initialDate: Date, endDate: Date) : Promise<IEntry[]> {
+        const db = await connect();
+
+        return db.collection('entries').find(
+            { 
+              userId: userId, 
+              dueDate: {
+                $gte: initialDate,
+                $lte: endDate
+            }
+        }).sort({ dueDate: 1 }).toArray();
+    }
+
     public async getPendingEntries(userId: string, initialDate: Date, endDate: Date) : Promise<IEntry[]> {
         const db = await connect();
 

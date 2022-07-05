@@ -56,6 +56,10 @@ export default class EntryService {
         await new EntryRepository().insertMany(entries);
     }
 
+    public async getEntries(userId:string, initialDate:Date, endDate:Date) {
+        return new EntryRepository().getEntries(userId, initialDate, endDate);
+    }
+
     public async getPendingEntries(userId: string, initialMonth?: number, initialYear?: number, includeOverdue?: number) {
 
         let initialDate = new Date(initialYear, initialMonth - 1, 1);
