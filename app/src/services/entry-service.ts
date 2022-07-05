@@ -9,6 +9,13 @@ export default class EntryService {
     public async add(payload: IInsertEntryPayload, userId: string, isPaid: boolean = false) {
         const entries: IEntry[] = [];
         const recurrenceNumber = payload.recurrenceNumber || 1;
+
+        if(recurrenceNumber > 360){
+            return {
+                status: 400,
+                error: "Recorrência maior que 360, Inválido"
+            }
+        }
         const recurrenceId = recurrenceNumber == 1 ? null : uuidv4();
         const recurrenceType = payload.recurrenceType || 'M';
         let dueDate = new Date(payload.dueDate);
@@ -46,7 +53,7 @@ export default class EntryService {
             }
         }
 
-        return new EntryRepository().insertMany(entries);
+        await new EntryRepository().insertMany(entries);
     }
 
     public async getPendingEntries(userId: string, initialMonth?: number, initialYear?: number, includeOverdue?: number) {

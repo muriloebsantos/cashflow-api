@@ -9,7 +9,11 @@ export const lambdaHandler = async (event: APIGatewayProxyEvent): Promise<APIGat
     const entriesInfo = JSON.parse(event.body);
     const userId = getUserId(event);
     
-    await new EntryService().add(entriesInfo, userId);
+   const response = await new EntryService().add(entriesInfo, userId);
+
+   if(response && response.error){
+     return defaultResult(response.status, response.error);
+   }
     
     return defaultResult(201);
 }
