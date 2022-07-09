@@ -14,10 +14,10 @@ export default class UserRepository {
         return db.collection('users').findOne({ _id: id });
     }
 
-    public async updateBalance(userId: string, balance: number) {
+    public async updateBalance(userId: string, balance: number, savings: number) {
         const db = await connect();
         
-        return db.collection('users').updateOne({ _id: userId }, { $set: { balance: balance } });
+        return db.collection('users').updateOne({ _id: userId }, { $set: { balance, savings } });
     }
 
     public async insertUser(user:IUser){

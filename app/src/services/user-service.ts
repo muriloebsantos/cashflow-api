@@ -45,23 +45,33 @@ export default class UserService {
     public async getUser(id: string) : Promise<IUser> {
         const user = await new UserRepository().getById(id);
 
+        user.savings = user.savings || 0;
+
         delete user.password;
 
         return user;
     }
 
-    public async adjustBalance(userId: string, newBalance: number) {
+    public async adjustBalance(userId: string, newBalance: number, newSavings: number, createEntry: boolean = false) {
         const userRepository = new UserRepository();
         const user = await userRepository.getById(userId);
         const currentBalance = user.balance;
-        const difference =  newBalance - currentBalance;
+        const currentSavings = user.savings || 0;
+        const totalCurrentBalance = currentBalance + currentSavings;
+
+        await userRepository.updateBalance(userId, newBalance, newSavings);
+
+        const difference =  (newBalance + newSavings) - totalCurrentBalance;
 
         if(difference == 0) {
             return;
         }
 
-        const type = difference > 0 ? 'C' : 'D';
+        if(!createEntry) {
+            return;
+        }
 
+        const type = difference > 0 ? 'C' : 'D';
         const entry: IInsertEntryPayload = {
             description: "Ajuste de saldo",
             dueDate: new Date(),
@@ -71,7 +81,6 @@ export default class UserService {
         };
 
         await new EntryService().add(entry, userId, true);
-        await userRepository.updateBalance(userId, newBalance);
     }
 
     private hash512Password (password:string) {

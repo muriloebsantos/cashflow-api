@@ -113,7 +113,7 @@ export default class EntryService {
             await entryRepository.setAsPaid(entry._id);
         }
       
-        await userRepository.updateBalance(userId, currentBalance);
+        await userRepository.updateBalance(userId, currentBalance, user.savings || 0);
     }
 
     public async delete(userId: string, entryId: string, deleteAll: number): Promise<IErrorOutput> {
