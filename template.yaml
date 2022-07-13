@@ -29,7 +29,7 @@ Resources:
   CashflowApi:
       Type: AWS::Serverless::Api
       Properties:
-        Name: ${ApiName}
+        Name: !Ref ApiName
         StageName: prod
         Auth:
           AddDefaultAuthorizerToCorsPreflight: false

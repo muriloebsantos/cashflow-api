@@ -15,14 +15,51 @@ export default class UserService {
             };
         }
 
-        const user = await new UserRepository().getByEmail(authPayload.email);
+        const userRepository = new UserRepository();
+        const user = await userRepository.getByEmail(authPayload.email);
 
-        if(!user || user.password != this.hash512Password(authPayload.password)) {
+        if(!user) {
             return { 
                 status: 401,
                 error: 'E-mail ou senha inválido'
             }; 
         }
+
+        if(user.password != this.hash512Password(authPayload.password)) {
+            if(user.incorretLoginAttempts === null || user.incorretLoginAttempts === undefined){
+                user.incorretLoginAttempts = 0;
+            }
+
+            user.incorretLoginAttempts++;
+
+            if(user.incorretLoginAttempts >= 5) {
+                user.isBlocked = true
+            }
+
+            await userRepository.updateUser(user);
+
+            if(user.isBlocked) {
+                return {
+                    status: 401,
+                    error: "A senha do usuário está bloqueada por tentativas de login excessivas"
+                }
+            }
+
+            return { 
+                status: 401,
+                error: 'E-mail ou senha inválido'
+            }; 
+        }
+
+        if(user.isBlocked) {
+            return {
+                status: 401,
+                error: "A senha do usuário está bloqueada por tentativas de login excessivas"
+            }
+        }
+        
+        user.incorretLoginAttempts = 0
+        await userRepository.updateUser(user);
 
         const algorithm: TAlgorithm = "HS512";
         const issued = Date.now();
@@ -123,6 +160,8 @@ export default class UserService {
             const textPlainPassword = user.password
             user.password = this.hash512Password(textPlainPassword);
             user.balance = 0;
+            user.isBlocked = false
+            user.incorretLoginAttempts = 0
             await userRepository.insertUser(user);
 
             return await this.authenticate({

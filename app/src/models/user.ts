@@ -5,4 +5,6 @@ interface IUser {
     password: string;
     balance: number;
     savings: number;
+    isBlocked: boolean;
+    incorretLoginAttempts: number;
 }

@@ -25,4 +25,10 @@ export default class UserRepository {
 
         return db.collection('users').insert(user);
     }
+
+    public async updateUser(user:IUser) {
+        const db = await connect();
+
+        return db.collection('users').replaceOne({_id: user._id}, user);
+    } 
 }
