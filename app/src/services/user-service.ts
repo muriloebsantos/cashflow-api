@@ -59,7 +59,8 @@ export default class UserService {
             }
         }
         
-        user.incorretLoginAttempts = 0
+        user.incorretLoginAttempts = 0;
+        user.lastLoginDate = utcNow();
         await userRepository.updateUser(user);
 
         const algorithm: TAlgorithm = "HS512";
@@ -166,6 +167,7 @@ export default class UserService {
             user.incorretLoginAttempts = 0;
             user.creationDate = utcTime;
             user.lastLoginDate = utcTime;
+            user.lastActivityDate = utcTime;
 
             await userRepository.insertUser(user);
 
@@ -176,6 +178,20 @@ export default class UserService {
         }
         catch(e) {
             console.log(e);
+        }
+    }
+
+    public async updateLastActiveTime(_id: string) {
+        const userRepository = new UserRepository();
+        const user = await userRepository.getById(_id);
+        if(user) {
+            user.lastActivityDate = utcNow();
+            await userRepository.updateUser(user);
+        } else {
+            return {
+                status: 404,
+                error: 'Usuário inexistente no sistema'
+            }       
         }
     }
 }

@@ -9,4 +9,5 @@ interface IUser {
     incorretLoginAttempts: number;
     creationDate: Date;
     lastLoginDate: Date;
+    lastActivityDate: Date;
 }
