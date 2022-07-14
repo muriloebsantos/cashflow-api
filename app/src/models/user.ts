@@ -10,4 +10,5 @@ interface IUser {
     creationDate: Date;
     lastLoginDate: Date;
     lastActivityDate: Date;
+    isAdmin: boolean;
 }

@@ -30,3 +30,7 @@ export function defaultResult(defaultStatusCode: number, result?: any) {
 export function getUserId(event: APIGatewayProxyEvent): string {
     return event.requestContext.authorizer.userId;
 }
+
+export function getIsAdmin(event: APIGatewayProxyEvent): boolean {
+    return event.requestContext.authorizer.isAdmin == "true";
+}

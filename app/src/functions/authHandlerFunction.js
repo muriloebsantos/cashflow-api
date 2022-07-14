@@ -31,7 +31,8 @@ var generatePolicy = function(principalId, effect, resource, decoded) {
   }
   
   authResponse.context = {
-      "userId": decoded.userId
+      "userId": decoded.userId,
+      "isAdmin": decoded.isAdmin      
   };
 
   return authResponse;

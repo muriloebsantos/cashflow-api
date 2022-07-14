@@ -69,6 +69,7 @@ export default class UserService {
         const expires = issued + ms;
         const session = {
             userId: user._id,
+            isAdmin: user.isAdmin || false,
             email: user.email,
             issued: issued,
             expires: expires
@@ -168,6 +169,7 @@ export default class UserService {
             user.creationDate = utcTime;
             user.lastLoginDate = utcTime;
             user.lastActivityDate = utcTime;
+            user.isAdmin = false;
 
             await userRepository.insertUser(user);
 
@@ -193,5 +195,18 @@ export default class UserService {
                 error: 'Usuário inexistente no sistema'
             }       
         }
+    }
+
+    public async listUsers() {
+        const userRepository = new UserRepository();
+        const users = await userRepository.getUsers();
+
+        for(let user of users){
+            delete user.savings;
+            delete user.balance;
+            delete user.password;
+        }
+
+        return users;
     }
 }
