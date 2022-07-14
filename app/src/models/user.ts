@@ -7,4 +7,6 @@ interface IUser {
     savings: number;
     isBlocked: boolean;
     incorretLoginAttempts: number;
+    creationDate: Date;
+    lastLoginDate: Date;
 }

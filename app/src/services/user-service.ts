@@ -2,6 +2,7 @@ import UserRepository from "../repositories/user-repository";
 import { encode, TAlgorithm } from "jwt-simple";
 import EntryService from "./entry-service";
 import { v4 as uuidv4 } from 'uuid'
+import { utcNow } from "../util/date-utils";
 
 const key = process.env.JWT_KEY;
 
@@ -156,12 +157,16 @@ export default class UserService {
                }
             }
 
+            const utcTime = utcNow();
             user._id = uuidv4();
             const textPlainPassword = user.password
             user.password = this.hash512Password(textPlainPassword);
             user.balance = 0;
-            user.isBlocked = false
-            user.incorretLoginAttempts = 0
+            user.isBlocked = false;
+            user.incorretLoginAttempts = 0;
+            user.creationDate = utcTime;
+            user.lastLoginDate = utcTime;
+
             await userRepository.insertUser(user);
 
             return await this.authenticate({

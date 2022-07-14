@@ -15,4 +15,10 @@ const addMonths = (date: Date, value: number) => {
     return d;
 }
 
-export  { addMonths, daysInMonth };
+const utcNow = () => {
+    const date = new Date();
+    const utcTime = Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), date.getUTCHours(), date.getUTCMinutes(), date.getUTCSeconds());
+    return new Date(utcTime);
+}
+
+export  { addMonths, daysInMonth, utcNow };
