@@ -6,7 +6,7 @@ import * as moment from 'moment';
 
 export default class EntryService {
 
-    public async add(payload: IInsertEntryPayload, userId: string, isPaid: boolean = false) {
+    public async add(payload: IInsertEntryPayload, userId: string) {
         const entries: IEntry[] = [];
         const recurrenceNumber = payload.recurrenceNumber || 1;
 
@@ -29,7 +29,7 @@ export default class EntryService {
                 value: payload.value || 0,
                 dueDate: dueDate,
                 purchaseDate: payload.purchaseDate,
-                isPaid: isPaid,
+                isPaid: payload.isPaid || false,
                 showRecurrenceNumber: payload.showRecurrenceNumber,
                 creditCardId: payload.creditCardId,
                 recurrenceId: recurrenceId,
@@ -54,6 +54,11 @@ export default class EntryService {
         }
 
         await new EntryRepository().insertMany(entries);
+
+        if(payload.commitEntries === true) {
+            const entriesIds = entries.map(e => e._id);
+            await this.commitMany(userId, entriesIds);
+        }
     }
 
     public async getEntries(userId:string, initialDate:Date, endDate:Date) {

@@ -8,4 +8,6 @@ interface IInsertEntryPayload {
     recurrenceType?: string;
     recurrenceNumber?: number;
     showRecurrenceNumber: boolean;
+    isPaid: boolean;
+    commitEntries: boolean;
 }

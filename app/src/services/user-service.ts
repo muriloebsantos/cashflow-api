@@ -117,10 +117,12 @@ export default class UserService {
             dueDate: new Date(),
             type: type,
             value: Math.abs(difference),
-            showRecurrenceNumber: false
+            showRecurrenceNumber: false,
+            isPaid: true,
+            commitEntries: false
         };
 
-        await new EntryService().add(entry, userId, true);
+        await new EntryService().add(entry, userId);
     }
 
     private hash512Password (password:string) {
