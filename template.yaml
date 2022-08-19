@@ -304,3 +304,72 @@ Resources:
             Auth:
               Authorizer: NONE
             RestApiId: !Ref CashflowApi
+
+
+  CreateCategoryFunction:
+    Type: AWS::Serverless::Function 
+    Properties:
+      CodeUri: app/dist
+      Handler: ./functions/createCategoryFunction.lambdaHandler
+      Runtime: nodejs14.x
+      MemorySize: 256
+      Events:
+        ApiGatewayEvent:
+          Type: Api 
+          Properties:
+            Path: categories
+            Method: post
+            Auth:
+              Authorizer: NONE
+            RestApiId: !Ref CashflowApi
+  
+  UpdateCategoryFunction:
+    Type: AWS::Serverless::Function 
+    Properties:
+      CodeUri: app/dist
+      Handler: ./functions/updateCategoryFunction.lambdaHandler
+      Runtime: nodejs14.x
+      MemorySize: 256
+      Events:
+        ApiGatewayEvent:
+          Type: Api 
+          Properties:
+            Path: categories/{id}
+            Method: put
+            Auth:
+              Authorizer: NONE
+            RestApiId: !Ref CashflowApi  
+
+  GetCategoryFunction:
+    Type: AWS::Serverless::Function 
+    Properties:
+      CodeUri: app/dist
+      Handler: ./functions/getCategoryFunction.lambdaHandler
+      Runtime: nodejs14.x
+      MemorySize: 256
+      Events:
+        ApiGatewayEvent:
+          Type: Api 
+          Properties:
+            Path: categories
+            Method: get
+            Auth:
+              Authorizer: NONE
+            RestApiId: !Ref CashflowApi
+  
+    DeleteCategoryFunction:
+    Type: AWS::Serverless::Function 
+    Properties:
+      CodeUri: app/dist
+      Handler: ./functions/deleteCategoryFunction.lambdaHandler
+      Runtime: nodejs14.x
+      MemorySize: 256
+      Events:
+        ApiGatewayEvent:
+          Type: Api 
+          Properties:
+            Path: categories/{id}
+            Method: delete
+            Auth:
+              Authorizer: NONE
+            RestApiId: !Ref CashflowApi
