@@ -9,8 +9,8 @@ Globals:
     Timeout: 10
     Environment:
       Variables:
-        DB_CONNECTION: !Ref DbConnection
         JWT_KEY: !Ref JwtKey
+        ENV: !Ref Env
   Api:
     Cors:
       AllowMethods: "'GET,POST,PUT,DELETE,OPTIONS'"
@@ -20,9 +20,9 @@ Globals:
 Parameters:
   ApiName:
     Type: String
-  DbConnection:
-    Type: String
   JwtKey:
+    Type: String
+  Env: 
     Type: String
 
 Resources:
@@ -304,3 +304,22 @@ Resources:
             Auth:
               Authorizer: NONE
             RestApiId: !Ref CashflowApi
+
+  UsersTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: !Sub 
+        - 'cashflow_${EnvName}_users'
+        - EnvName: !Ref Env
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - AttributeName: "_id"
+          AttributeType: "S"
+        - AttributeName: "email"
+          AttributeType: "S"
+      KeySchema:
+        - AttributeName: "_id"
+          KeyType: "HASH"
+        - AttributeName: "email"
+          KeyType: "RANGE"
+    
