@@ -43,7 +43,7 @@ Resources:
     Properties:
       CodeUri: app
       Handler: ./src/functions/authHandlerFunction.handler
-      Runtime: nodejs14.x
+      Runtime: nodejs20.x
       MemorySize: 256
       
   CreateTokenFunction:
@@ -51,7 +51,7 @@ Resources:
     Properties:
       CodeUri: app/dist
       Handler: ./functions/createTokenFunction.lambdaHandler
-      Runtime: nodejs14.x
+      Runtime: nodejs20.x
       MemorySize: 256
       Events:
         ApiGatewayEvent:
@@ -68,7 +68,7 @@ Resources:
     Properties:
       CodeUri: app/dist
       Handler: ./functions/getMeFunction.lambdaHandler
-      Runtime: nodejs14.x
+      Runtime: nodejs20.x
       MemorySize: 256
       Events:
         ApiGatewayEvent:
@@ -83,7 +83,7 @@ Resources:
     Properties:
       CodeUri: app/dist
       Handler: ./functions/getUsersFunction.lambdaHandler
-      Runtime: nodejs14.x
+      Runtime: nodejs20.x
       MemorySize: 256
       Events:
         ApiGatewayEvent:
@@ -98,7 +98,7 @@ Resources:
     Properties:
       CodeUri: app/dist
       Handler: ./functions/updateActivityFunction.lambdaHandler
-      Runtime: nodejs14.x
+      Runtime: nodejs20.x
       MemorySize: 256
       Events:
         ApiGatewayEvent:
@@ -113,7 +113,7 @@ Resources:
     Properties:
       CodeUri: app/dist
       Handler: ./functions/adjustBalanceFunction.lambdaHandler
-      Runtime: nodejs14.x
+      Runtime: nodejs20.x
       MemorySize: 256
       Events:
         ApiGatewayEvent:
@@ -128,7 +128,7 @@ Resources:
     Properties:
       CodeUri: app/dist
       Handler: ./functions/createCreditCardFunction.lambdaHandler
-      Runtime: nodejs14.x
+      Runtime: nodejs20.x
       MemorySize: 256
       Events:
         ApiGatewayEvent:
@@ -143,7 +143,7 @@ Resources:
     Properties:
       CodeUri: app/dist
       Handler: ./functions/getCreditCardsFunction.lambdaHandler
-      Runtime: nodejs14.x
+      Runtime: nodejs20.x
       MemorySize: 256
       Events:
         ApiGatewayEvent:
@@ -158,7 +158,7 @@ Resources:
       Properties:
         CodeUri: app/dist
         Handler: ./functions/updateCreditCardFunction.lambdaHandler
-        Runtime: nodejs14.x
+        Runtime: nodejs20.x
         MemorySize: 256
         Events:
           ApiGatewayEvent:
@@ -173,7 +173,7 @@ Resources:
       Properties:
         CodeUri: app/dist
         Handler: ./functions/deleteCreditCardFunction.lambdaHandler
-        Runtime: nodejs14.x
+        Runtime: nodejs20.x
         MemorySize: 256
         Events:
           ApiGatewayEvent:
@@ -188,7 +188,7 @@ Resources:
     Properties:
       CodeUri: app/dist
       Handler: ./functions/createEntriesFunction.lambdaHandler
-      Runtime: nodejs14.x
+      Runtime: nodejs20.x
       MemorySize: 256
       Events:
         ApiGatewayEvent:
@@ -203,7 +203,7 @@ Resources:
     Properties:
       CodeUri: app/dist
       Handler: ./functions/getPendingEntriesFunction.lambdaHandler
-      Runtime: nodejs14.x
+      Runtime: nodejs20.x
       MemorySize: 256
       Events:
         ApiGatewayEvent:
@@ -218,7 +218,7 @@ Resources:
     Properties:
       CodeUri: app/dist
       Handler: ./functions/getEntriesFunction.lambdaHandler
-      Runtime: nodejs14.x
+      Runtime: nodejs20.x
       MemorySize: 256
       Events:
         ApiGatewayEvent:
@@ -233,7 +233,7 @@ Resources:
     Properties:
       CodeUri: app/dist
       Handler: ./functions/commitEntryFunction.lambdaHandler
-      Runtime: nodejs14.x
+      Runtime: nodejs20.x
       MemorySize: 256
       Events:
         ApiGatewayEvent:
@@ -248,7 +248,7 @@ Resources:
     Properties:
       CodeUri: app/dist
       Handler: ./functions/deleteEntryFunction.lambdaHandler
-      Runtime: nodejs14.x
+      Runtime: nodejs20.x
       MemorySize: 256
       Events:
         ApiGatewayEvent:
@@ -263,7 +263,7 @@ Resources:
     Properties:
       CodeUri: app/dist
       Handler: ./functions/updateEntryFunction.lambdaHandler
-      Runtime: nodejs14.x
+      Runtime: nodejs20.x
       MemorySize: 256
       Events:
         ApiGatewayEvent:
@@ -278,7 +278,7 @@ Resources:
     Properties:
       CodeUri: app/dist
       Handler: ./functions/testFunction.lambdaHandler
-      Runtime: nodejs14.x
+      Runtime: nodejs20.x
       MemorySize: 256
       Events:
         ApiGatewayEvent:
@@ -293,7 +293,7 @@ Resources:
     Properties:
       CodeUri: app/dist
       Handler: ./functions/createUserFunction.lambdaHandler
-      Runtime: nodejs14.x
+      Runtime: nodejs20.x
       MemorySize: 256
       Events:
         ApiGatewayEvent:
