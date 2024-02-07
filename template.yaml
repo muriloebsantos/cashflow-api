@@ -45,6 +45,11 @@ Resources:
       Handler: ./src/functions/authHandlerFunction.handler
       Runtime: nodejs20.x
       MemorySize: 256
+      Policies:
+      - DynamoDBCrudPolicy:
+          TableName: !Sub 
+            - 'cashflow_${EnvName}_*'
+            - EnvName: !Ref Env
       
   CreateTokenFunction:
     Type: AWS::Serverless::Function 
@@ -53,6 +58,11 @@ Resources:
       Handler: ./functions/createTokenFunction.lambdaHandler
       Runtime: nodejs20.x
       MemorySize: 256
+      Policies:
+      - DynamoDBCrudPolicy:
+          TableName: !Sub 
+            - 'cashflow_${EnvName}_*'
+            - EnvName: !Ref Env
       Events:
         ApiGatewayEvent:
           Type: Api 
@@ -70,6 +80,11 @@ Resources:
       Handler: ./functions/getMeFunction.lambdaHandler
       Runtime: nodejs20.x
       MemorySize: 256
+      Policies:
+      - DynamoDBCrudPolicy:
+          TableName: !Sub 
+            - 'cashflow_${EnvName}_*'
+            - EnvName: !Ref Env
       Events:
         ApiGatewayEvent:
           Type: Api 
@@ -85,6 +100,11 @@ Resources:
       Handler: ./functions/getUsersFunction.lambdaHandler
       Runtime: nodejs20.x
       MemorySize: 256
+      Policies:
+      - DynamoDBCrudPolicy:
+          TableName: !Sub 
+            - 'cashflow_${EnvName}_*'
+            - EnvName: !Ref Env
       Events:
         ApiGatewayEvent:
           Type: Api 
@@ -100,6 +120,11 @@ Resources:
       Handler: ./functions/updateActivityFunction.lambdaHandler
       Runtime: nodejs20.x
       MemorySize: 256
+      Policies:
+      - DynamoDBCrudPolicy:
+          TableName: !Sub 
+            - 'cashflow_${EnvName}_*'
+            - EnvName: !Ref Env
       Events:
         ApiGatewayEvent:
           Type: Api 
@@ -115,6 +140,11 @@ Resources:
       Handler: ./functions/adjustBalanceFunction.lambdaHandler
       Runtime: nodejs20.x
       MemorySize: 256
+      Policies:
+      - DynamoDBCrudPolicy:
+          TableName: !Sub 
+            - 'cashflow_${EnvName}_*'
+            - EnvName: !Ref Env
       Events:
         ApiGatewayEvent:
           Type: Api 
@@ -130,6 +160,11 @@ Resources:
       Handler: ./functions/createCreditCardFunction.lambdaHandler
       Runtime: nodejs20.x
       MemorySize: 256
+      Policies:
+      - DynamoDBCrudPolicy:
+          TableName: !Sub 
+            - 'cashflow_${EnvName}_*'
+            - EnvName: !Ref Env
       Events:
         ApiGatewayEvent:
           Type: Api 
@@ -145,6 +180,11 @@ Resources:
       Handler: ./functions/getCreditCardsFunction.lambdaHandler
       Runtime: nodejs20.x
       MemorySize: 256
+      Policies:
+      - DynamoDBCrudPolicy:
+          TableName: !Sub 
+            - 'cashflow_${EnvName}_*'
+            - EnvName: !Ref Env
       Events:
         ApiGatewayEvent:
           Type: Api 
@@ -160,6 +200,11 @@ Resources:
         Handler: ./functions/updateCreditCardFunction.lambdaHandler
         Runtime: nodejs20.x
         MemorySize: 256
+        Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Sub 
+              - 'cashflow_${EnvName}_*'
+              - EnvName: !Ref Env
         Events:
           ApiGatewayEvent:
             Type: Api 
@@ -175,6 +220,11 @@ Resources:
         Handler: ./functions/deleteCreditCardFunction.lambdaHandler
         Runtime: nodejs20.x
         MemorySize: 256
+        Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Sub 
+              - 'cashflow_${EnvName}_*'
+              - EnvName: !Ref Env
         Events:
           ApiGatewayEvent:
             Type: Api 
@@ -190,6 +240,11 @@ Resources:
       Handler: ./functions/createEntriesFunction.lambdaHandler
       Runtime: nodejs20.x
       MemorySize: 256
+      Policies:
+      - DynamoDBCrudPolicy:
+          TableName: !Sub 
+            - 'cashflow_${EnvName}_*'
+            - EnvName: !Ref Env
       Events:
         ApiGatewayEvent:
           Type: Api 
@@ -205,6 +260,11 @@ Resources:
       Handler: ./functions/getPendingEntriesFunction.lambdaHandler
       Runtime: nodejs20.x
       MemorySize: 256
+      Policies:
+      - DynamoDBCrudPolicy:
+          TableName: !Sub 
+            - 'cashflow_${EnvName}_*'
+            - EnvName: !Ref Env
       Events:
         ApiGatewayEvent:
           Type: Api 
@@ -220,6 +280,11 @@ Resources:
       Handler: ./functions/getEntriesFunction.lambdaHandler
       Runtime: nodejs20.x
       MemorySize: 256
+      Policies:
+      - DynamoDBCrudPolicy:
+          TableName: !Sub 
+            - 'cashflow_${EnvName}_*'
+            - EnvName: !Ref Env
       Events:
         ApiGatewayEvent:
           Type: Api 
@@ -235,6 +300,11 @@ Resources:
       Handler: ./functions/commitEntryFunction.lambdaHandler
       Runtime: nodejs20.x
       MemorySize: 256
+      Policies:
+      - DynamoDBCrudPolicy:
+          TableName: !Sub 
+            - 'cashflow_${EnvName}_*'
+            - EnvName: !Ref Env
       Events:
         ApiGatewayEvent:
           Type: Api 
@@ -250,6 +320,11 @@ Resources:
       Handler: ./functions/deleteEntryFunction.lambdaHandler
       Runtime: nodejs20.x
       MemorySize: 256
+      Policies:
+      - DynamoDBCrudPolicy:
+          TableName: !Sub 
+            - 'cashflow_${EnvName}_*'
+            - EnvName: !Ref Env
       Events:
         ApiGatewayEvent:
           Type: Api 
@@ -265,6 +340,11 @@ Resources:
       Handler: ./functions/updateEntryFunction.lambdaHandler
       Runtime: nodejs20.x
       MemorySize: 256
+      Policies:
+      - DynamoDBCrudPolicy:
+          TableName: !Sub 
+            - 'cashflow_${EnvName}_*'
+            - EnvName: !Ref Env
       Events:
         ApiGatewayEvent:
           Type: Api 
@@ -295,6 +375,11 @@ Resources:
       Handler: ./functions/createUserFunction.lambdaHandler
       Runtime: nodejs20.x
       MemorySize: 256
+      Policies:
+      - DynamoDBCrudPolicy:
+          TableName: !Sub 
+            - 'cashflow_${EnvName}_*'
+            - EnvName: !Ref Env
       Events:
         ApiGatewayEvent:
           Type: Api 
