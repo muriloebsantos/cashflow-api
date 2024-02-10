@@ -49,4 +49,48 @@ public class UsersTests
         result.Payload.Token.Should().NotBeEmpty();
         result.Payload.Expiration.Should().BeAfter(DateTime.Now.AddMinutes(60));
      }
+
+     [Fact]
+     public async Task Should_Not_Authenticate_User() 
+     {
+        // arrange
+        var user = CreateUserRequest.CreateValidRequest();
+        await _cashflowClient.Post<CreateUserResponse>("users", user);
+        var authRequest = new AuthUserRequest 
+        {
+          Email = user.Email,
+          Password = "wrong password"
+        };
+
+        // act
+        var result = await _cashflowClient.Post<ErrorResult>("token", authRequest);
+
+        // arrange
+        result.Status.Should().Be(System.Net.HttpStatusCode.Unauthorized);
+        result.Payload.Error.Should().Be("E-mail ou senha inválido");
+     }
+
+     [Fact]
+     public async Task Should_Block_User_When_5_Wrong_Login_Attempts() 
+     {
+        // arrange
+        var user = CreateUserRequest.CreateValidRequest();
+        await _cashflowClient.Post<CreateUserResponse>("users", user);
+        var authRequest = new AuthUserRequest 
+        {
+          Email = user.Email,
+          Password = "wrong password"
+        };
+
+        // act
+        Result<ErrorResult> result = null;
+        for (int i = 0; i < 5; i++)
+        {
+            result = await _cashflowClient.Post<ErrorResult>("token", authRequest);
+        }
+        
+        // arrange
+        result.Status.Should().Be(System.Net.HttpStatusCode.Unauthorized);
+        result.Payload.Error.Should().Be("A senha do usuário está bloqueada por tentativas de login excessivas");
+     }
 }
