@@ -70,6 +70,24 @@ public class UsersTests
         result.Payload.Error.Should().Be("E-mail ou senha inválido");
      }
 
+    [Fact]
+     public async Task Should_Not_Authenticate_Unregistered_User() 
+     {
+        // arrange
+        var authRequest = new AuthUserRequest 
+        {
+          Email = new Faker().Internet.Email(),
+          Password = "random password"
+        };
+
+        // act
+        var result = await _cashflowClient.Post<ErrorResult>("token", authRequest);
+
+        // arrange
+        result.Status.Should().Be(System.Net.HttpStatusCode.Unauthorized);
+        result.Payload.Error.Should().Be("E-mail ou senha inválido");
+     }
+
      [Fact]
      public async Task Should_Block_User_When_5_Wrong_Login_Attempts() 
      {
