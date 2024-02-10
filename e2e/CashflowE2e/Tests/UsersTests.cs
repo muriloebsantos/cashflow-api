@@ -12,7 +12,7 @@ public class UsersTests
     }
 
     [Fact]
-    public async void Should_Create_User()
+    public async Task Should_Create_User()
     {
         // arrange
         var validUser = CreateUserRequest.CreateValidRequest();
@@ -27,4 +27,26 @@ public class UsersTests
         result.Payload.Token.Should().NotBeEmpty();
         result.Payload.Expiration.Should().BeAfter(DateTime.Now.AddMinutes(60));
     }
+
+    [Fact]
+     public async Task Should_Authenticate_User() 
+     {
+        // arrange
+        var user = CreateUserRequest.CreateValidRequest();
+        var createUserResponse = await _cashflowClient.Post<CreateUserResponse>("users", user);
+        var authRequest = new AuthUserRequest 
+        {
+          Email = user.Email,
+          Password = user.Password
+        };
+
+        // act
+        var result = await _cashflowClient.Post<CreateUserResponse>("token", authRequest);
+
+        // arrange
+        result.Status.Should().Be(System.Net.HttpStatusCode.OK);
+        result.Payload.UserId.Should().Be(createUserResponse.Payload.UserId);
+        result.Payload.Token.Should().NotBeEmpty();
+        result.Payload.Expiration.Should().BeAfter(DateTime.Now.AddMinutes(60));
+     }
 }
