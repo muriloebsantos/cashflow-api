@@ -132,4 +132,23 @@ public class UsersTests
         result.Status.Should().Be(System.Net.HttpStatusCode.Unauthorized, result.RawResponse);
         result.Payload.Error.Should().Be("A senha do usuário está bloqueada por tentativas de login excessivas");
      }
+
+     [Fact]
+     public async Task Should_Get_Me() 
+     {
+        // arrange
+        var user = CreateUserRequest.CreateValidRequest();
+        var createUserResponse = await _cashflowClient.Post<CreateUserResponse>("users", user);
+ 
+        // act
+        var getMeResponse = await _cashflowClient.Get<GetMeResponse>("me", createUserResponse.Payload.Token);
+
+        // arrange
+        getMeResponse.Status.Should().Be(System.Net.HttpStatusCode.OK, getMeResponse.RawResponse);
+        getMeResponse.Payload.Id.Should().Be(createUserResponse.Payload.UserId);
+        getMeResponse.Payload.Name.Should().Be(user.Name);
+        getMeResponse.Payload.Email.Should().Be(user.Email);
+        getMeResponse.Payload.Balance.Should().Be(0);
+        getMeResponse.Payload.Savings.Should().Be(0);
+     }
 }
