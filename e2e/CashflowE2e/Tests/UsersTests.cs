@@ -5,12 +5,8 @@ namespace CashFlowE2e.Tests;
 
 public class UsersTests
 {
-    private readonly CashFlowClient _cashflowClient;
-
-    public UsersTests()
-    {
-        _cashflowClient = new CashFlowClient();
-    }
+    private readonly CashFlowClient _cashflowClient = new CashFlowClient();
+    private readonly Faker _faker = new Faker();
 
     [Fact]
     public async Task Should_Create_User()
@@ -97,7 +93,7 @@ public class UsersTests
         // arrange
         var authRequest = new AuthUserRequest 
         {
-          Email = new Faker().Internet.Email(),
+          Email = _faker.Internet.Email(),
           Password = "random password"
         };
 
@@ -151,4 +147,29 @@ public class UsersTests
         getMeResponse.Payload.Balance.Should().Be(0);
         getMeResponse.Payload.Savings.Should().Be(0);
      }
+
+     [Theory]
+     [InlineData(true)]
+     [InlineData(false)] 
+      public async Task Should_Update_Balance(bool createEntry) 
+      {
+        // arrange
+        var user = CreateUserRequest.CreateValidRequest();
+        var createUserResponse = await _cashflowClient.Post<CreateUserResponse>("users", user);
+        var adjustBalanceRequestRequest = new AdjustBalanceRequest
+        {
+          CreateEntry = createEntry,
+          NewBalance = Math.Round(_faker.Random.Decimal(0.01m, 100000), 2),
+          NewSavings = Math.Round(_faker.Random.Decimal(0.01m, 100000), 2)
+        };
+
+        // act 
+        var adjustBalanceResponse = await _cashflowClient.Post<object>("me/balance-adjustment", adjustBalanceRequestRequest, createUserResponse.Payload.Token);
+        var getMeResponse = await _cashflowClient.Get<GetMeResponse>("me", createUserResponse.Payload.Token);
+
+        // assert
+        adjustBalanceResponse.Status.Should().Be(System.Net.HttpStatusCode.Created, adjustBalanceResponse.RawResponse);
+        getMeResponse.Payload.Balance.Should().Be(adjustBalanceRequestRequest.NewBalance);
+        getMeResponse.Payload.Savings.Should().Be(adjustBalanceRequestRequest.NewSavings);
+      }
 }
