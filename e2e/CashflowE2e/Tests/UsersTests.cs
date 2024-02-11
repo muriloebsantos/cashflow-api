@@ -2,6 +2,7 @@ using CashflowE2e;
 using CashflowE2e.Models;
 
 namespace CashFlowE2e.Tests;
+
 public class UsersTests
 {
     private readonly CashFlowClient _cashflowClient;
@@ -27,6 +28,26 @@ public class UsersTests
         result.Payload.Token.Should().NotBeEmpty();
         result.Payload.Expiration.Should().BeAfter(DateTime.Now.AddMinutes(60));
     }
+
+    [Fact]
+     public async Task Should_Not_Create_User_With_Existing_Email() 
+     {
+        // arrange
+        var firstUser = CreateUserRequest.CreateValidRequest();
+        await _cashflowClient.Post<CreateUserResponse>("users", firstUser);
+        var secondUser = new CreateUserRequest 
+        {
+          Email = firstUser.Email,
+          Password = firstUser.Password
+        };
+
+        // act
+        var result = await _cashflowClient.Post<ErrorResult>("users", secondUser);
+
+        // arrange
+        result.Status.Should().Be(System.Net.HttpStatusCode.Conflict);
+        result.Payload.Error.Should().Be("Email já cadastrado no sistema");
+     }
 
     [Fact]
      public async Task Should_Authenticate_User() 
