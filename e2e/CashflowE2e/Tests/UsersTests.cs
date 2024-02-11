@@ -23,7 +23,7 @@ public class UsersTests
         var result = await _cashflowClient.Post<CreateUserResponse>("users", validUser);
 
         // arrange
-        result.Status.Should().Be(System.Net.HttpStatusCode.Created);
+        result.Status.Should().Be(System.Net.HttpStatusCode.Created, result.RawResponse);
         result.Payload.UserId.Should().NotBeEmpty();
         result.Payload.Token.Should().NotBeEmpty();
         result.Payload.Expiration.Should().BeAfter(DateTime.Now.AddMinutes(60));
@@ -45,7 +45,7 @@ public class UsersTests
         var result = await _cashflowClient.Post<ErrorResult>("users", secondUser);
 
         // arrange
-        result.Status.Should().Be(System.Net.HttpStatusCode.Conflict);
+        result.Status.Should().Be(System.Net.HttpStatusCode.Conflict, result.RawResponse);
         result.Payload.Error.Should().Be("Email já cadastrado no sistema");
      }
 
@@ -65,7 +65,7 @@ public class UsersTests
         var result = await _cashflowClient.Post<CreateUserResponse>("token", authRequest);
 
         // arrange
-        result.Status.Should().Be(System.Net.HttpStatusCode.OK);
+        result.Status.Should().Be(System.Net.HttpStatusCode.OK, result.RawResponse);
         result.Payload.UserId.Should().Be(createUserResponse.Payload.UserId);
         result.Payload.Token.Should().NotBeEmpty();
         result.Payload.Expiration.Should().BeAfter(DateTime.Now.AddMinutes(60));
@@ -87,7 +87,7 @@ public class UsersTests
         var result = await _cashflowClient.Post<ErrorResult>("token", authRequest);
 
         // arrange
-        result.Status.Should().Be(System.Net.HttpStatusCode.Unauthorized);
+        result.Status.Should().Be(System.Net.HttpStatusCode.Unauthorized, result.RawResponse);
         result.Payload.Error.Should().Be("E-mail ou senha inválido");
      }
 
@@ -105,7 +105,7 @@ public class UsersTests
         var result = await _cashflowClient.Post<ErrorResult>("token", authRequest);
 
         // arrange
-        result.Status.Should().Be(System.Net.HttpStatusCode.Unauthorized);
+        result.Status.Should().Be(System.Net.HttpStatusCode.Unauthorized, result.RawResponse);
         result.Payload.Error.Should().Be("E-mail ou senha inválido");
      }
 
@@ -129,7 +129,7 @@ public class UsersTests
         }
         
         // arrange
-        result.Status.Should().Be(System.Net.HttpStatusCode.Unauthorized);
+        result.Status.Should().Be(System.Net.HttpStatusCode.Unauthorized, result.RawResponse);
         result.Payload.Error.Should().Be("A senha do usuário está bloqueada por tentativas de login excessivas");
      }
 }

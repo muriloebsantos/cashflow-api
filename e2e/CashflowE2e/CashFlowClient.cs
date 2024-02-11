@@ -34,7 +34,8 @@ public class CashFlowClient
     return new Result<TResponse>
     {
       Status = response.StatusCode,
-      Payload = responsePayload
+      Payload = responsePayload,
+      RawResponse = response.Content
     };
   }
 }

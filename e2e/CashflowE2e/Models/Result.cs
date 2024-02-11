@@ -6,5 +6,6 @@ namespace CashflowE2e.Models
     {
         public HttpStatusCode Status { get; set; }
         public T Payload { get; set; }
+        public string RawResponse { get; set; }
     }
 }
